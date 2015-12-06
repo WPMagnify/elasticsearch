@@ -9,6 +9,7 @@
  */
 
 use Magnify\Elasticsearch as ES;
+
 /**
  * Hooked into the `magnify_loaded` to initialize the driver.
  *
@@ -19,10 +20,7 @@ function magnify_elasticsearch_load(Magnify $magnify)
 {
     foreach (magnify_elasticsearch_drivers() as $d) {
         $magnify["elasticsearch.{$d}.factory"] = function ($magnify) use ($d) {
-            return new ES\OptionsClientFactory($magnify['logger'], sprintf(
-                'magnify_elasticsearch_%s',
-                $d
-            ));
+            return new ES\OptionsClientFactory($magnify['logger'], $d);
         };
 
         $magnify["elasticsearch.{$d}"] = function ($magnify) use ($d) {
